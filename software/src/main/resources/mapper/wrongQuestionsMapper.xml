@@ -49,4 +49,5 @@
         select kind,count(*) as number from wrongquestions where sid = #{id}
         group by kind
     </select>
+
 </mapper>

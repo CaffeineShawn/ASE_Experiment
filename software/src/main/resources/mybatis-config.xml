@@ -23,10 +23,9 @@
     </environments>
     <!-- 将mapper文件加入到配置文件中 -->
     <mappers>
-<!--        <mapper resource="mapper/websiteMapper.xml" />-->
-<!--        <package name="resources.mapper"/>-->
         <mapper resource="mapper/questionMapper.xml"/>
         <mapper resource="mapper/studentMapper.xml"/>
         <mapper resource="mapper/wrongQuestionsMapper.xml"/>
+        <mapper resource="mapper/scoreMapper.xml"/>
     </mappers>
 </configuration>
