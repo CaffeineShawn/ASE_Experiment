@@ -24,8 +24,7 @@ export default new Vuex.Store({
     },
     getPrivilege: state => { //  这里的state对应着上面这个state
         if(state.privilege<4){return '学生'}
-        else{return '老师'}
-        // return state.privilege
+        else{return '老师'}// return state.privilege
     }
   },
   mutations: {

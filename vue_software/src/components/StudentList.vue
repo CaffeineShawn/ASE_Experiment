@@ -171,7 +171,7 @@ export default {
       })
         .then((_) => {
           this.$http.post('/students/deleteStudent', {
-            'paper_id': object.paper_id,
+            'id': object.id,
           }).then(response => {
             this.$message("删除成功")
             this.fetchJobs()
@@ -224,7 +224,6 @@ export default {
                 .match(input)
           }
         })
-        // }.bind(this)).bind(this)
       } else {
         items1 = items
       }

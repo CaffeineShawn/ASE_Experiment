@@ -157,10 +157,8 @@ export default {
   },
   methods: {
     interPaper(object){
-      // console.log(object)
       const { href } = this.$router.resolve({
         name: `PaperDetail`,
-        // params:{
           query: {
           id: object.paper_id,
           time: object.total_time,
@@ -169,7 +167,6 @@ export default {
         }
       })
       window.open(href, "_self")
-      // window.open(href, "_blank")
     },
     deletePaper(object){
       console.log(object)

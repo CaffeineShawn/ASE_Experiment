@@ -51,22 +51,14 @@ export default {
       // rewriteDialogVisible: false,
     };
   },
+  /**vuex-persistedstate只能这样手动清除**/
+  // this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:new Map()})
+  /**同步答案**/
   created() {
     this.getPaperById()
-    // this.$store.commit("changeUserId",{userId:5})
-    // console.log('userID')
-    // console.log(this.$store.getters.getUserId)
-
     let that = this
-    /**vuex-persistedstate只能这样手动清除**/
-    // this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:new Map()})
-    // this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:new Map()})
-    // console.log(this.$store.getters.getUserPaperMap4Answer)
-    /**同步答案**/
     if((this.$store.getters.getUserId+'+'+this.$route.query.id) in this.$store.getters.getUserPaperMap4Answer){
-      // this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:[[]]})
       console.log("answer is in vuex")
-      // console.log(this.$store.getters.getUserPaperMap4Answer)
       that.answerList=this.$store.getters.getUserPaperMap4Answer[(this.$store.getters.getUserId+'+'+this.$route.query.id)]
     }
     /**同步时间**/
@@ -80,15 +72,11 @@ export default {
       timeMap[(this.$store.getters.getUserId+'+'+this.$route.query.id)] = new Date().getTime()+parseInt(this.$route.query.time)*1000
       this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:timeMap})
       that.DDLTime=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+'+'+this.$route.query.id)]
-      // console.log(this.$store.getters.getUserPaperMap4Time)
     }
-
     that.time = setInterval(that.remain_sec,1000)
-
   },
   methods: {
     getPaperById(){
-      // this.DDLTime=response.data['paper']
       this.$http.post('/paperList/getPaper', {
         'id': this.$route.query.id
       }).then(response => {
@@ -110,21 +98,14 @@ export default {
     },
     submitPaper(){
       /**总交卷**/
-      console.log(this.answerList)
       let tag=-1;
         if(this.remainTime> 0){
           for(let i=0;i<this.questionList.length;i++){
-            if(this.answerList[i][0]===undefined) {
-              tag=i
-              break
-            }
+            if(this.answerList[i][0]===undefined) {tag=i;break}
           }
           if(tag>=0){
-            // alert("你有空白题!")
             this.$confirm("你有空白题 第" +(tag+1)+""+"题! 确认提交?",'提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
+              confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
             })
               .then((_) => {
                 this.calculateScore();
@@ -133,9 +114,7 @@ export default {
               .catch((_) => { });
           }else{
             this.$confirm("确认提交?",'提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
+              confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
             })
               .then((_) => {
                 this.calculateScore();
@@ -154,53 +133,36 @@ export default {
         }
       }
       this.$confirm("分数: "+this.score,'提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+        confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
       })
         .then((_) => {
-          this.back()
-          done();
+          this.back();done();
         })
         .catch((_) => { this.back()});
       /**老师也可以做卷子但是不给提交到数据库**/
       if(this.$store.getters.getPrivilege==='老师'){
-        this.$message("你是老师分数仅在前端显示")
-        return;
+        this.$message("你是老师分数仅在前端显示");return;
       }
       this.$http.post('/answeredQuestions/insert', {
-        // 'pid': this.$route.query.id,
-        'sid': this.$store.getters.getUserId,
-        'idList': this.idList,
-        'answerList': this.answerList
+        'sid': this.$store.getters.getUserId, 'idList': this.idList, 'answerList': this.answerList
       }).then(response => {
-        this.$message("更新答卷表成功")
-        console.log(response )
+        this.$message("更新答卷表成功");console.log(response )
       }).catch(error=>{
-        this.$message("更新答卷表失败")
-        console.log(error)
+        this.$message("更新答卷表失败");console.log(error)
       })
       this.$http.post('/score/insertScore', {
-        // 'pid': this.$route.query.id,
-        'sid': this.$store.getters.getUserId,
-        'paper_id': this.$route.query.id,
-        'score': this.score,
+        'sid': this.$store.getters.getUserId, 'paper_id': this.$route.query.id, 'score': this.score,
       }).then(response => {
-        this.$message("更新分数表成功")
-        console.log(response )
+        this.$message("更新分数表成功");console.log(response )
       }).catch(error=>{
-        this.$message("更新答卷表失败")
-        // this.$message({
-        //   showClose: true,
-        //   type: 'waring',
-        //   message: "更新答卷表失败!"
-        // })
-        console.log(error)
+        this.$message("更新答卷表失败");console.log(error)
       })
-
-
-
     },
+    // this.$message({
+    //   showClose: true,
+    //   type: 'waring',
+    //   message: "更新答卷表失败!"
+    // })
 
     /**
      * @remain_sec 进行秒数自减的操作
@@ -212,27 +174,16 @@ export default {
       this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:answerMap})
 
       let that = this;
-      // console.log("that.DDLTime")
-      // console.log("new Date().getTime()")
-      // console.log(that.DDLTime)
-      // console.log(new Date().getTime())
       this.remainTime = Math.round((that.DDLTime-new Date().getTime())/1000)
 
       /**自动交卷**/
       if(this.remainTime <= 0){
-        // let timeMap=new Map(this.$store.getters.getUserPaperMap4Time)
         let timeMap=this.$store.getters.getUserPaperMap4Time
         if(this.$store.getters.getUserId+'+'+this.$route.query.id in timeMap)delete timeMap[this.$store.getters.getUserId+'+'+this.$route.query.id]
-        // timeMap.delete(this.$store.getters.getUserId+'+'+this.$route.query.id)
         this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:timeMap})
         this.submitPaper()
         clearInterval(that.time)
       }
-      // if(that.DDLTime === 0){
-      //   that.$router.push({path:'/'});
-      // }else{
-      //   // that.DDLTime--;
-      // }
     },
     back(){
       this.$router.go(-1);//返回上一层
