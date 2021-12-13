@@ -25,7 +25,7 @@
       </el-popover>
     </div>
     <el-container>
-      <el-header style="height: 70px">
+      <el-header style="height: 70px !important">
 <!--          不能删掉这个header否则css有bug-->
         <el-row type="flex">
         </el-row>

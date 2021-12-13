@@ -132,7 +132,7 @@ export default {
     width: 600px;
     height: 600px;
     margin-left: 40px;
-    margin-top: 10%;
+    margin-top: 5%;
   }
   .box2 {
     width: 600px;
@@ -140,5 +140,6 @@ export default {
     margin-left: 100px;
     margin-top: 5%;
   }
+  overflow: hidden;
 }
 </style>

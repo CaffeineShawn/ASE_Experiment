@@ -36,4 +36,8 @@ export default {
 a{
   text-decoration:none
 }
+.el-menu-vertical-demo el-menu--collapse el-menu{
+  height: 100%;
+  background-color: rgb(60, 63, 65) !important;
+}
 </style>

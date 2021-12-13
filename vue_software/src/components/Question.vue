@@ -29,7 +29,8 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table :data="questionList" border stripe>
+        <el-table :data="questionList"  style="width: 100%"
+    max-height="525" border stripe>
           <!-- 索引列 -->
           <el-table-column type="index" :index="indexMethod" label="序号" width="50" ></el-table-column>
           <el-table-column label="类型" prop="kind" width="100"></el-table-column>
@@ -662,8 +663,7 @@ export default {
 </script>
 
 <style>
-#root,
-.el-container {
+#root, .el-container {
   height: 100%;
 }
 .el-row.el-row--flex {
@@ -695,6 +695,8 @@ export default {
   width: 12vw;
 }
 
+
+
 @media screen and (max-width: 600px) { /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
   /*你的css代码*/
   .el-select {
@@ -702,6 +704,7 @@ export default {
   }
   .el-table {
     overflow: hidden;
+    
   }
   .detailViewDialog {
     width: 70% !important;
