@@ -63,27 +63,26 @@ public class PaperListController {
     @PostMapping(value = "/addPaperWithQuestions")
     public String addPaper(@RequestBody Map<String, Object> payload) {
 
-        Logger log = LoggerFactory.getLogger(this.getClass());
-
-        log.info(payload.toString());
+        // 获得试卷对应的题目id数组
         ArrayList<Integer> questionIdArray = (ArrayList<Integer>) payload.get("candidateQuestionsForExam");
+        // 新建试卷实体类实例
         PaperList paperList = new PaperList();
+        // 获取实体对象
         Object paperObj = payload.get("paperList");
-        log.info(paperObj.getClass().toString());
         LinkedHashMap<String, String> paperMap = (LinkedHashMap<String, String>) paperObj;
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
+        // 设置试卷基本信息
         paperList.setTotal_score(questionIdArray.size()*10);
         paperList.setPaper_date(timestamp);
         paperList.setPaper_name(paperMap.get("paper_name"));
         paperList.setTotal_time(String.valueOf(paperMap.get("total_time")));
-
+        // 先向试卷库中插入试卷信息，再将对应的试卷id和问题id插入试卷题目表建立完成一对多关系
         boolean res = paperListService.addPaperList(paperList) == 1;
         int paper_id = paperList.getPaper_id();
         for (Integer question_id : questionIdArray) {
             res =  res && paperQuestionService.addPaperQuestionRelationship(paper_id, question_id) == 1;
         }
-
         return res ? "ok" : "error";
     }
 

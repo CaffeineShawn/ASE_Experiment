@@ -621,7 +621,6 @@ export default {
             this.addQuestionDialogVisible = false;
           }
 
-
         } else {
           this.$message.error({message: "题目不完全，提交失败！",showClose: true});
           return false;
@@ -631,9 +630,7 @@ export default {
     // 添加题目网络请求
     addQuestion() {
       let _this = this.questionInfo;
-
-      this.$http
-        .post("/questions/addQuestion", {
+      this.$http.post("/questions/addQuestion", {
           question: _this.question,
           kind: _this.kind,
           option1: _this.option1,
